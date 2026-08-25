@@ -135,7 +135,7 @@
           if (window.scrollY > 300) {
             stickyCta.style.display = 'block';
           } else {
-            stickyCTA.style.display = 'none';
+            stickyCta.style.display = 'none';
           }
         });
       }
