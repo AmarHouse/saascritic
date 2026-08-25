@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free SaaS Stack Builder — Build your ideal marketing stack and see total pricing.">
+  <title>SaaS Stack Builder — Build Your Perfect Stack | SaaS Review Portal</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <style>
+    .stack-builder { max-width: 700px; margin: 0 auto; }
+    .stack-item { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4); border: 1px solid var(--color-gray-200); border-radius: var(--radius-md); margin-bottom: var(--space-3); }
+    .stack-item.selected { border-color: var(--color-primary); background-color: var(--color-primary-light); }
+    .stack-item img { width: 40px; height: 40px; }
+    .stack-item-info { flex: 1; }
+    .stack-item-name { font-weight: var(--font-semibold); }
+    .stack-item-price { font-size: var(--text-sm); color: var(--color-gray-600); }
+    .stack-total { background-color: var(--color-gray-50); padding: var(--space-6); border-radius: var(--radius-lg); text-align: center; margin-top: var(--space-6); }
+    .stack-total-number { font-size: var(--text-4xl); font-weight: var(--font-bold); color: var(--color-primary); }
+  </style>
+</head>
+<body>
+  <div class="affiliate-disclosure" style="background-color: var(--color-gray-100); text-align: center; padding: 12px 16px; font-size: 13px;">
+    <div class="container">
+      <strong>Affiliate Disclosure:</strong> We earn commissions when you buy through our links. <a href="/en/about/affiliate-disclosure/" style="text-decoration: underline;">Learn more</a>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/en/" class="logo"><span class="logo-icon">S</span><span>SaaSCritic</span></a>
+        <nav class="nav">
+          <a href="/en/reviews/" class="nav-link">Reviews</a>
+          <a href="/en/comparisons/" class="nav-link">Compare</a>
+          <a href="/en/best/" class="nav-link">Best Of</a>
+          <a href="/en/tools/" class="nav-link active">Tools</a>
+          <a href="/en/about/" class="nav-link">About</a>
+        </nav>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <article>
+    <section class="hero" style="padding: var(--space-12) 0;">
+      <div class="container" style="text-align: center;">
+        <span class="badge badge-primary" style="margin-bottom: var(--space-4);">Free Tool</span>
+        <h1>SaaS Stack Builder</h1>
+        <p style="font-size: var(--text-lg); color: var(--color-gray-600); max-width: 600px; margin: 0 auto;">
+          Select the tools you need. See your total monthly cost. Find the best stack for your budget.
+        </p>
+      </div>
+    </section>
+
+    <section style="padding: 0 0 var(--space-12);">
+      <div class="container">
+        <div class="card">
+          <h3 style="margin-bottom: var(--space-6);">Select Your Tools</h3>
+          
+          <h4 style="margin-bottom: var(--space-3);">Email Marketing</h4>
+          <div class="stack-item" data-tool="systemeio" data-price="27" onclick="toggleTool(this)">
+            <img src="../../images/logos/systemeio.svg" alt="Systeme.io">
+            <div class="stack-item-info">
+              <div class="stack-item-name">Systeme.io</div>
+              <div class="stack-item-price">$27/mo (Startup plan)</div>
+            </div>
+            <input type="checkbox" class="stack-checkbox">
+          </div>
+          <div class="stack-item" data-tool="activecampaign" data-price="15" onclick="toggleTool(this)">
+            <img src="../../images/logos/activecampaign.svg" alt="ActiveCampaign">
+            <div class="stack-item-info">
+              <div class="stack-item-name">ActiveCampaign</div>
+              <div class="stack-item-price">$15/mo (Starter plan)</div>
+            </div>
+            <input type="checkbox" class="stack-checkbox">
+          </div>
+          <div class="stack-item" data-tool="kit" data-price="25" onclick="toggleTool(this)">
+            <img src="../../images/logos/kit.svg" alt="Kit">
+            <div class="stack-item-info">
+              <div class="stack-item-name">Kit (ConvertKit)</div>
+              <div class="stack-item-price">$25/mo (Creator plan)</div>
+            </div>
+            <input type="checkbox" class="stack-checkbox">
+          </div>
+
+          <h4 style="margin: var(--space-6) 0 var(--space-3);">SEO Tools</h4>
+          <div class="stack-item" data-tool="semrush" data-price="130" onclick="toggleTool(this)">
+            <img src="../../images/logos/semrush.svg" alt="Semrush">
+            <div class="stack-item-info">
+              <div class="stack-item-name">Semrush</div>
+              <div class="stack-item-price">$130/mo (Pro plan)</div>
+            </div>
+            <input type="checkbox" class="stack-checkbox">
+          </div>
+
+          <h4 style="margin: var(--space-6) 0 var(--space-3);">CRM / All-in-One</h4>
+          <div class="stack-item" data-tool="highlevel" data-price="97" onclick="toggleTool(this)">
+            <img src="../../images/logos/highlevel.svg" alt="HighLevel">
+            <div class="stack-item-info">
+              <div class="stack-item-name">HighLevel</div>
+              <div class="stack-item-price">$97/mo (Starter plan)</div>
+            </div>
+            <input type="checkbox" class="stack-checkbox">
+          </div>
+        </div>
+
+        <div class="stack-total">
+          <div class="calculator-result-label">Your Monthly Stack Cost</div>
+          <div class="stack-total-number" id="stack-total">$0</div>
+          <div class="calculator-result-label" style="margin-top: var(--space-2);">Annual: <span id="stack-annual">$0</span></div>
+          <div id="stack-tools" style="margin-top: var(--space-4); font-size: var(--text-sm); color: var(--color-gray-600);"></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 0 0 var(--space-12);">
+      <div class="container" style="max-width: 700px;">
+        <h3>Tips for Building Your Stack</h3>
+        <ul style="color: var(--color-gray-600);">
+          <li><strong>Start small:</strong> You don't need every tool at once. Start with email marketing and add tools as you grow.</li>
+          <li><strong>Look for overlaps:</strong> Some tools do multiple things (like Systeme.io). You might need fewer tools than you think.</li>
+          <li><strong>Consider all-in-one:</strong> Platforms like HighLevel replace 5+ tools, which can save money at scale.</li>
+          <li><strong>Check free tiers:</strong> Several tools offer free plans for beginners.</li>
+        </ul>
+      </div>
+    </section>
+  </article>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-logo">
+            <span class="logo-icon" style="background-color: var(--color-primary);">S</span>
+            <span>SaaSCritic</span>
+          </div>
+          <p class="footer-brand-description">Expert-tested SaaS reviews with transparent scoring.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Reviews</h4>
+          <ul class="footer-links">
+            <li><a href="/en/reviews/systemeio/">Systeme.io</a></li>
+            <li><a href="/en/reviews/highlevel/">HighLevel</a></li>
+            <li><a href="/en/reviews/semrush/">Semrush</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="/en/best/email-marketing/">Email Marketing</a></li>
+            <li><a href="/en/best/crm/">CRM</a></li>
+            <li><a href="/en/best/seo-tools/">SEO Tools</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Company</h4>
+          <ul class="footer-links">
+            <li><a href="/en/about/">About Us</a></li>
+            <li><a href="/en/about/methodology/">How We Review</a></li>
+            <li><a href="/en/about/affiliate-disclosure/">Affiliate Disclosure</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2026 SaaS Review Portal. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="/en/privacy/">Privacy Policy</a>
+          <a href="/en/cookies/">Cookie Policy</a>
+          <a href="/en/terms/">Terms of Use</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner">
+    <div class="cookie-banner-content">
+      <p class="cookie-banner-text">We use cookies to improve your experience. <a href="/en/cookies/">Learn more</a></p>
+      <div class="cookie-banner-actions">
+        <button id="cookie-essential-only" class="btn btn-sm btn-outline">Essential Only</button>
+        <button id="cookie-accept-all" class="btn btn-sm btn-primary">Accept All</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script>
+    function toggleTool(el) {
+      el.classList.toggle('selected');
+      const checkbox = el.querySelector('.stack-checkbox');
+      checkbox.checked = !checkbox.checked;
+      updateTotal();
+    }
+
+    function updateTotal() {
+      const items = document.querySelectorAll('.stack-item.selected');
+      let total = 0;
+      let names = [];
+      items.forEach(item => {
+        total += parseInt(item.dataset.price);
+        names.push(item.querySelector('.stack-item-name').textContent);
+      });
+      document.getElementById('stack-total').textContent = '$' + total;
+      document.getElementById('stack-annual').textContent = '$' + (total * 12);
+      document.getElementById('stack-tools').textContent = names.length > 0 ? names.join(' + ') : 'No tools selected';
+    }
+  </script>
+</body>
+</html>

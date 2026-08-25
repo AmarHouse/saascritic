@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free affiliate calculator — Calculate your potential earnings from SaaS affiliate programs.">
+  <title>Affiliate Calculator — Calculate Your Earnings | SaaS Review Portal</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+  <style>
+    .calculator { max-width: 600px; margin: 0 auto; }
+    .calculator-field { margin-bottom: var(--space-4); }
+    .calculator-field label { display: block; font-weight: var(--font-medium); margin-bottom: var(--space-2); }
+    .calculator-field input, .calculator-field select { width: 100%; padding: var(--space-3); border: 1px solid var(--color-gray-300); border-radius: var(--radius-md); font-size: var(--text-base); }
+    .calculator-result { background-color: var(--color-gray-50); padding: var(--space-6); border-radius: var(--radius-lg); margin-top: var(--space-6); text-align: center; }
+    .calculator-result-number { font-size: var(--text-4xl); font-weight: var(--font-bold); color: var(--color-primary); }
+    .calculator-result-label { font-size: var(--text-sm); color: var(--color-gray-600); }
+    .calculator-breakdown { margin-top: var(--space-4); text-align: left; }
+    .calculator-breakdown-row { display: flex; justify-content: space-between; padding: var(--space-2) 0; border-bottom: 1px solid var(--color-gray-200); font-size: var(--text-sm); }
+  </style>
+</head>
+<body>
+  <div class="affiliate-disclosure" style="background-color: var(--color-gray-100); text-align: center; padding: 12px 16px; font-size: 13px;">
+    <div class="container">
+      <strong>Affiliate Disclosure:</strong> We earn commissions when you buy through our links. <a href="/en/about/affiliate-disclosure/" style="text-decoration: underline;">Learn more</a>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/en/" class="logo"><span class="logo-icon">S</span><span>SaaSCritic</span></a>
+        <nav class="nav">
+          <a href="/en/reviews/" class="nav-link">Reviews</a>
+          <a href="/en/comparisons/" class="nav-link">Compare</a>
+          <a href="/en/best/" class="nav-link">Best Of</a>
+          <a href="/en/tools/" class="nav-link active">Tools</a>
+          <a href="/en/about/" class="nav-link">About</a>
+        </nav>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <article>
+    <section class="hero" style="padding: var(--space-12) 0;">
+      <div class="container" style="text-align: center;">
+        <span class="badge badge-primary" style="margin-bottom: var(--space-4);">Free Tool</span>
+        <h1>Affiliate Earnings Calculator</h1>
+        <p style="font-size: var(--text-lg); color: var(--color-gray-600); max-width: 600px; margin: 0 auto;">
+          Calculate your potential earnings from SaaS affiliate programs. Enter your traffic and conversion assumptions.
+        </p>
+      </div>
+    </section>
+
+    <section style="padding: 0 0 var(--space-12);">
+      <div class="container">
+        <div class="card">
+          <div class="calculator">
+            <div class="calculator-field">
+              <label for="product">Select Product</label>
+              <select id="product">
+                <option value="systemeio">Systeme.io (60% commission, $27/mo plan)</option>
+                <option value="highlevel">HighLevel (40% commission, $97/mo plan)</option>
+                <option value="semrush">Semrush ($200/sale flat fee)</option>
+                <option value="thinkific">Thinkific (30% commission, $49/mo plan)</option>
+                <option value="kit">Kit (50% commission, $25/mo plan)</option>
+                <option value="custom">Custom Program</option>
+              </select>
+            </div>
+
+            <div class="calculator-field">
+              <label for="visitors">Monthly Visitors</label>
+              <input type="number" id="visitors" value="10000" min="100" step="100">
+            </div>
+
+            <div class="calculator-field">
+              <label for="ctr">Click-Through Rate (%)</label>
+              <input type="number" id="ctr" value="5" min="0.1" max="100" step="0.1">
+            </div>
+
+            <div class="calculator-field">
+              <label for="conversion">Conversion Rate (%)</label>
+              <input type="number" id="conversion" value="3" min="0.1" max="100" step="0.1">
+            </div>
+
+            <div id="custom-fields" style="display: none;">
+              <div class="calculator-field">
+                <label for="commission-type">Commission Type</label>
+                <select id="commission-type">
+                  <option value="percentage">Percentage of Sale</option>
+                  <option value="flat">Flat Fee per Sale</option>
+                </select>
+              </div>
+              <div class="calculator-field">
+                <label for="commission-value">Commission Value</label>
+                <input type="number" id="commission-value" value="30" min="0" step="0.01">
+              </div>
+              <div class="calculator-field">
+                <label for="sale-price">Sale Price ($)</label>
+                <input type="number" id="sale-price" value="50" min="0" step="0.01">
+              </div>
+              <div class="calculator-field">
+                <label for="recurring">Recurring Commission?</label>
+                <select id="recurring">
+                  <option value="yes">Yes — Monthly recurring</option>
+                  <option value="no">No — One-time only</option>
+                </select>
+              </div>
+            </div>
+
+            <button id="calculate-btn" class="btn btn-primary" style="width: 100%; margin-top: var(--space-4);">Calculate Earnings</button>
+          </div>
+
+          <div class="calculator-result" id="result" style="display: none;">
+            <div class="calculator-result-label">Estimated Monthly Earnings</div>
+            <div class="calculator-result-number" id="result-monthly">$0</div>
+            <div class="calculator-result-label" style="margin-top: var(--space-2);">Estimated Annual Earnings</div>
+            <div class="calculator-result-number" id="result-annual" style="font-size: var(--text-2xl);">$0</div>
+            
+            <div class="calculator-breakdown" id="breakdown">
+              <div class="calculator-breakdown-row">
+                <span>Monthly Visitors</span>
+                <span id="b-visitors">10,000</span>
+              </div>
+              <div class="calculator-breakdown-row">
+                <span>Clicks (CTR)</span>
+                <span id="b-clicks">500</span>
+              </div>
+              <div class="calculator-breakdown-row">
+                <span>Sales (CVR)</span>
+                <span id="b-sales">15</span>
+              </div>
+              <div class="calculator-breakdown-row">
+                <span>Commission per Sale</span>
+                <span id="b-commission">$0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--space-8);">
+          <h3>How Affiliate Commissions Work</h3>
+          <div class="grid grid-2" style="margin-top: var(--space-4);">
+            <div class="card">
+              <h4>One-Time Commissions</h4>
+              <p style="font-size: var(--text-sm); color: var(--color-gray-600); margin-bottom: 0;">You earn once per sale. Great for high-ticket items. Example: Semrush pays $200 per sale.</p>
+            </div>
+            <div class="card">
+              <h4>Recurring Commissions</h4>
+              <p style="font-size: var(--text-sm); color: var(--color-gray-600); margin-bottom: 0;">You earn monthly as long as the customer stays. Example: Systeme.io pays 60% monthly.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-logo">
+            <span class="logo-icon" style="background-color: var(--color-primary);">S</span>
+            <span>SaaSCritic</span>
+          </div>
+          <p class="footer-brand-description">Expert-tested SaaS reviews with transparent scoring.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Reviews</h4>
+          <ul class="footer-links">
+            <li><a href="/en/reviews/systemeio/">Systeme.io</a></li>
+            <li><a href="/en/reviews/highlevel/">HighLevel</a></li>
+            <li><a href="/en/reviews/semrush/">Semrush</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="/en/best/email-marketing/">Email Marketing</a></li>
+            <li><a href="/en/best/crm/">CRM</a></li>
+            <li><a href="/en/best/seo-tools/">SEO Tools</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Company</h4>
+          <ul class="footer-links">
+            <li><a href="/en/about/">About Us</a></li>
+            <li><a href="/en/about/methodology/">How We Review</a></li>
+            <li><a href="/en/about/affiliate-disclosure/">Affiliate Disclosure</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2026 SaaS Review Portal. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="/en/privacy/">Privacy Policy</a>
+          <a href="/en/cookies/">Cookie Policy</a>
+          <a href="/en/terms/">Terms of Use</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner">
+    <div class="cookie-banner-content">
+      <p class="cookie-banner-text">We use cookies to improve your experience. <a href="/en/cookies/">Learn more</a></p>
+      <div class="cookie-banner-actions">
+        <button id="cookie-essential-only" class="btn btn-sm btn-outline">Essential Only</button>
+        <button id="cookie-accept-all" class="btn btn-sm btn-primary">Accept All</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script>
+    const productData = {
+      systemeio: { type: 'percentage', value: 60, price: 27, recurring: true },
+      highlevel: { type: 'percentage', value: 40, price: 97, recurring: true },
+      semrush: { type: 'flat', value: 200, price: 0, recurring: false },
+      thinkific: { type: 'percentage', value: 30, price: 49, recurring: true },
+      kit: { type: 'percentage', value: 50, price: 25, recurring: true },
+    };
+
+    const productSelect = document.getElementById('product');
+    const customFields = document.getElementById('custom-fields');
+    const calculateBtn = document.getElementById('calculate-btn');
+    const resultDiv = document.getElementById('result');
+
+    productSelect.addEventListener('change', () => {
+      customFields.style.display = productSelect.value === 'custom' ? 'block' : 'none';
+    });
+
+    calculateBtn.addEventListener('click', () => {
+      const visitors = parseInt(document.getElementById('visitors').value) || 0;
+      const ctr = parseFloat(document.getElementById('ctr').value) || 0;
+      const cvr = parseFloat(document.getElementById('conversion').value) || 0;
+
+      let commission, commissionPerSale, recurring;
+
+      if (productSelect.value === 'custom') {
+        const type = document.getElementById('commission-type').value;
+        const value = parseFloat(document.getElementById('commission-value').value) || 0;
+        const price = parseFloat(document.getElementById('sale-price').value) || 0;
+        recurring = document.getElementById('recurring').value === 'yes';
+        commissionPerSale = type === 'percentage' ? (price * value / 100) : value;
+      } else {
+        const p = productData[productSelect.value];
+        commissionPerSale = p.type === 'percentage' ? (p.price * p.value / 100) : p.value;
+        recurring = p.recurring;
+      }
+
+      const clicks = visitors * (ctr / 100);
+      const sales = clicks * (cvr / 100);
+      const monthlyEarnings = sales * commissionPerSale;
+      const annualEarnings = recurring ? monthlyEarnings * 12 : monthlyEarnings;
+
+      document.getElementById('result-monthly').textContent = '$' + monthlyEarnings.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById('result-annual').textContent = '$' + annualEarnings.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById('b-visitors').textContent = visitors.toLocaleString();
+      document.getElementById('b-clicks').textContent = Math.round(clicks).toLocaleString();
+      document.getElementById('b-sales').textContent = Math.round(sales).toLocaleString();
+      document.getElementById('b-commission').textContent = '$' + commissionPerSale.toFixed(2);
+
+      resultDiv.style.display = 'block';
+    });
+  </script>
+</body>
+</html>

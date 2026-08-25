@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaaS Tool Finder — Find the Perfect Tool for Your Business | SaaSCritic</title>
+    <meta name="description" content="Answer 5 quick questions and get a personalized recommendation for the best SaaS tools based on your needs, budget, and experience level.">
+    <link rel="canonical" href="https://saascritic.com/en/tools/finder">
+    <meta property="og:title" content="SaaS Tool Finder — Find the Perfect Tool">
+    <meta property="og:description" content="Answer 5 quick questions and get a personalized recommendation for the best SaaS tools.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://saascritic.com/en/tools/finder">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <style>
+        .finder-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .finder-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .finder-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .finder-header p {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+        }
+        .progress-bar {
+            background: var(--color-gray-200);
+            border-radius: 999px;
+            height: 8px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: var(--color-primary);
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.3s ease;
+        }
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        .question-card.active {
+            display: block;
+        }
+        .question-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 1.5rem;
+        }
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .option-card {
+            border: 2px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .option-card:hover {
+            border-color: var(--color-primary);
+            background: var(--color-primary-50);
+        }
+        .option-card.selected {
+            border-color: var(--color-primary);
+            background: var(--color-primary-50);
+        }
+        .option-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .option-card .label {
+            font-weight: 500;
+            color: var(--color-text-primary);
+        }
+        .option-card .desc {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.25rem;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+        .results-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        .results-card.active {
+            display: block;
+        }
+        .result-item {
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-item h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-item .score {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .result-item .reasons {
+            margin: 0.5rem 0;
+            padding-left: 1.25rem;
+        }
+        .result-item .reasons li {
+            margin-bottom: 0.25rem;
+            color: var(--color-text-secondary);
+        }
+        .result-cta {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+        }
+        .result-cta:hover {
+            background: var(--color-primary-dark);
+        }
+        .disclaimer {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--color-gray-50);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../" class="logo">
+                <span class="logo-icon">📊</span>
+                <span class="logo-text">SaaSCritic</span>
+            </a>
+            <nav class="main-nav">
+                <a href="../reviews/">Reviews</a>
+                <a href="../comparisons/">Comparisons</a>
+                <a href="../best/">Best Of</a>
+                <a href="../tools/" class="active">Tools</a>
+                <a href="../about/">About</a>
+            </nav>
+            <div class="header-actions">
+                <button class="search-toggle" aria-label="Search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="finder-container">
+            <!-- Header -->
+            <div class="finder-header">
+                <h1>Find Your Perfect SaaS Tool</h1>
+                <p>Answer 5 quick questions and we'll recommend the best tools for your needs.</p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="question-card active" data-step="1">
+                <h2>What's your primary goal?</h2>
+                <div class="option-grid">
+                    <div class="option-card" data-value="marketing" onclick="selectOption(this)">
+                        <div class="icon">📧</div>
+                        <div class="label">Email Marketing</div>
+                        <div class="desc">Send newsletters, automations, and campaigns</div>
+                    </div>
+                    <div class="option-card" data-value="courses" onclick="selectOption(this)">
+                        <div class="icon">🎓</div>
+                        <div class="label">Sell Courses</div>
+                        <div class="desc">Create and sell online courses</div>
+                    </div>
+                    <div class="option-card" data-value="crm" onclick="selectOption(this)">
+                        <div class="icon">🤝</div>
+                        <div class="label">CRM & Sales</div>
+                        <div class="desc">Manage leads and sales pipeline</div>
+                    </div>
+                    <div class="option-card" data-value="seo" onclick="selectOption(this)">
+                        <div class="icon">🔍</div>
+                        <div class="label">SEO & Analytics</div>
+                        <div class="desc">Improve search rankings and traffic</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-card" data-step="2">
+                <h2>What's your budget per month?</h2>
+                <div class="option-grid">
+                    <div class="option-card" data-value="free" onclick="selectOption(this)">
+                        <div class="icon">💰</div>
+                        <div class="label">Free / $0</div>
+                        <div class="desc">Looking for free options</div>
+                    </div>
+                    <div class="option-card" data-value="starter" onclick="selectOption(this)">
+                        <div class="icon">💵</div>
+                        <div class="label">Up to $50/mo</div>
+                        <div class="desc">Starter budget</div>
+                    </div>
+                    <div class="option-card" data-value="growth" onclick="selectOption(this)">
+                        <div class="icon">💳</div>
+                        <div class="label">$50–$200/mo</div>
+                        <div class="desc">Growth stage</div>
+                    </div>
+                    <div class="option-card" data-value="enterprise" onclick="selectOption(this)">
+                        <div class="icon">🏦</div>
+                        <div class="label">$200+/mo</div>
+                        <div class="desc">Ready to invest</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-card" data-step="3">
+                <h2>What's your experience level?</h2>
+                <div class="option-grid">
+                    <div class="option-card" data-value="beginner" onclick="selectOption(this)">
+                        <div class="icon">🌱</div>
+                        <div class="label">Beginner</div>
+                        <div class="desc">Just starting out</div>
+                    </div>
+                    <div class="option-card" data-value="intermediate" onclick="selectOption(this)">
+                        <div class="icon">🌿</div>
+                        <div class="label">Intermediate</div>
+                        <div class="desc">1-3 years experience</div>
+                    </div>
+                    <div class="option-card" data-value="advanced" onclick="selectOption(this)">
+                        <div class="icon">🌳</div>
+                        <div class="label">Advanced</div>
+                        <div class="desc">3+ years, need power features</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-card" data-step="4">
+                <h2>What integrations do you need?</h2>
+                <div class="option-grid">
+                    <div class="option-card" data-value="none" onclick="selectOption(this)">
+                        <div class="icon">🔌</div>
+                        <div class="label">None / Basic</div>
+                        <div class="desc">Standalone is fine</div>
+                    </div>
+                    <div class="option-card" data-value="wordpress" onclick="selectOption(this)">
+                        <div class="icon">📝</div>
+                        <div class="label">WordPress</div>
+                        <div class="desc">Need WordPress integration</div>
+                    </div>
+                    <div class="option-card" data-value="zapier" onclick="selectOption(this)">
+                        <div class="icon">⚡</div>
+                        <div class="label">Zapier / API</div>
+                        <div class="desc">Need automation workflows</div>
+                    </div>
+                    <div class="option-card" data-value="all" onclick="selectOption(this)">
+                        <div class="icon">🔗</div>
+                        <div class="label">Many / All</div>
+                        <div class="desc">Need extensive integrations</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-card" data-step="5">
+                <h2>How important is ease of use?</h2>
+                <div class="option-grid">
+                    <div class="option-card" data-value="critical" onclick="selectOption(this)">
+                        <div class="icon">🎯</div>
+                        <div class="label">Critical</div>
+                        <div class="desc">I need it simple and intuitive</div>
+                    </div>
+                    <div class="option-card" data-value="important" onclick="selectOption(this)">
+                        <div class="icon">👍</div>
+                        <div class="label">Important</div>
+                        <div class="desc">Prefer easy, but can learn</div>
+                    </div>
+                    <div class="option-card" data-value="flexible" onclick="selectOption(this)">
+                        <div class="icon">🔧</div>
+                        <div class="label">Flexible</div>
+                        <div class="desc">I'll learn if features are worth it</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons" id="navButtons">
+                <button class="btn btn-secondary" id="prevBtn" onclick="prevStep()" disabled>Previous</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextStep()" disabled>Next</button>
+            </div>
+
+            <!-- Results -->
+            <div class="results-card" id="resultsCard">
+                <h2 style="text-align: center; margin-bottom: 1.5rem;">Your Personalized Recommendations</h2>
+                <div id="resultsList"></div>
+                <div class="disclaimer">
+                    <p>These recommendations are based on your answers. We earn commissions from some links — <a href="../about/affiliate-disclosure/">see our disclosure</a>.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="../" class="logo">
+                        <span class="logo-icon">📊</span>
+                        <span class="logo-text">SaaSCritic</span>
+                    </a>
+                    <p>Independent reviews and comparisons to help you find the right SaaS tools.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Reviews</h4>
+                    <ul>
+                        <li><a href="../reviews/systemeio.html">Systeme.io</a></li>
+                        <li><a href="../reviews/highlevel.html">HighLevel</a></li>
+                        <li><a href="../reviews/semrush.html">Semrush</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><a href="../tools/finder.html">Tool Finder</a></li>
+                        <li><a href="../tools/calculator.html">Affiliate Calculator</a></li>
+                        <li><a href="../tools/stack-builder.html">Stack Builder</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="../about/">About</a></li>
+                        <li><a href="../about/methodology.html">Methodology</a></li>
+                        <li><a href="../privacy/">Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 SaaSCritic. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // State
+        let currentStep = 1;
+        const totalSteps = 5;
+        let answers = {};
+
+        // Product database with scoring
+        const products = {
+            systemeio: {
+                name: 'Systeme.io',
+                tagline: 'All-in-one marketing platform',
+                score: 0,
+                reasons: [],
+                url: '../reviews/systemeio.html',
+                affiliate: 'https://systeme.io?aff=saascritic',
+                pricing: 'Free tier available'
+            },
+            kit: {
+                name: 'Kit (ConvertKit)',
+                tagline: 'Email marketing for creators',
+                score: 0,
+                reasons: [],
+                url: '../reviews/kit.html',
+                affiliate: 'https://kit.com?ref=saascritic',
+                pricing: 'From $29/mo'
+            },
+            highlevel: {
+                name: 'HighLevel',
+                tagline: 'All-in-one CRM and marketing',
+                score: 0,
+                reasons: [],
+                url: '../reviews/highlevel.html',
+                affiliate: 'https://gohighlevel.com?aff=saascritic',
+                pricing: 'From $97/mo'
+            },
+            semrush: {
+                name: 'Semrush',
+                tagline: 'SEO and competitive intelligence',
+                score: 0,
+                reasons: [],
+                url: '../reviews/semrush.html',
+                affiliate: 'https://semrush.com?ref=saascritic',
+                pricing: 'From $129/mo'
+            },
+            thinkific: {
+                name: 'Thinkific',
+                tagline: 'Course creation platform',
+                score: 0,
+                reasons: [],
+                url: '../reviews/thinkific.html',
+                affiliate: 'https://thinkific.com?ref=saascritic',
+                pricing: 'Free tier available'
+            },
+            activecampaign: {
+                name: 'ActiveCampaign',
+                tagline: 'Email marketing & automation',
+                score: 0,
+                reasons: [],
+                url: '../reviews/activecampaign.html',
+                affiliate: 'https://activecampaign.com?ref=saascritic',
+                pricing: 'From $15/mo'
+            }
+        };
+
+        // Scoring logic
+        function scoreProducts() {
+            // Reset scores
+            Object.values(products).forEach(p => {
+                p.score = 0;
+                p.reasons = [];
+            });
+
+            // Goal scoring
+            if (answers.goal === 'marketing') {
+                addScore('kit', 30, 'Built specifically for email marketing');
+                addScore('activecampaign', 25, 'Advanced email automation');
+                addScore('systemeio', 20, 'Email marketing included free');
+            } else if (answers.goal === 'courses') {
+                addScore('thinkific', 30, 'Purpose-built for course creation');
+                addScore('systemeio', 25, 'Course builder included free');
+                addScore('kit', 15, 'Can sell digital products');
+            } else if (answers.goal === 'crm') {
+                addScore('highlevel', 30, 'Full CRM with pipeline management');
+                addScore('activecampaign', 25, 'CRM with automation');
+                addScore('systemeio', 15, 'Basic CRM included');
+            } else if (answers.goal === 'seo') {
+                addScore('semrush', 30, 'Industry-leading SEO toolset');
+                addScore('activecampaign', 10, 'Basic SEO features');
+            }
+
+            // Budget scoring
+            if (answers.budget === 'free') {
+                addScore('systemeio', 25, 'Generous free tier');
+                addScore('thinkific', 20, 'Free plan available');
+                addScore('highlevel', -20, 'No free tier');
+                addScore('semrush', -25, 'No free tier');
+            } else if (answers.budget === 'starter') {
+                addScore('kit', 15, 'Affordable entry point');
+                addScore('activecampaign', 15, 'Competitive pricing');
+                addScore('systemeio', 15, 'Good value');
+            } else if (answers.budget === 'growth') {
+                addScore('highlevel', 15, 'Great value at this tier');
+                addScore('semrush', 10, 'Full feature access');
+            } else if (answers.budget === 'enterprise') {
+                addScore('highlevel', 20, 'Scales well');
+                addScore('semrush', 20, 'Enterprise features');
+            }
+
+            // Experience scoring
+            if (answers.experience === 'beginner') {
+                addScore('systemeio', 20, 'Beginner-friendly interface');
+                addScore('thinkific', 15, 'Easy course setup');
+                addScore('highlevel', -10, 'Steeper learning curve');
+            } else if (answers.experience === 'intermediate') {
+                addScore('kit', 15, 'Good balance of features and ease');
+                addScore('activecampaign', 15, 'Powerful but learnable');
+            } else if (answers.experience === 'advanced') {
+                addScore('highlevel', 20, 'Advanced automation');
+                addScore('semrush', 20, 'Deep analytics');
+                addScore('activecampaign', 15, 'Advanced segmentation');
+            }
+
+            // Integration scoring
+            if (answers.integrations === 'wordpress') {
+                addScore('kit', 15, 'Excellent WordPress plugin');
+                addScore('activecampaign', 15, 'Good WordPress support');
+                addScore('systemeio', 10, 'WordPress integration available');
+            } else if (answers.integrations === 'zapier') {
+                addScore('highlevel', 20, 'Full API access');
+                addScore('activecampaign', 15, 'Zapier + API');
+                addScore('semrush', 10, 'API available');
+            } else if (answers.integrations === 'all') {
+                addScore('highlevel', 25, 'Most integrations');
+                addScore('activecampaign', 20, '900+ integrations');
+            }
+
+            // Ease of use scoring
+            if (answers.ease === 'critical') {
+                addScore('systemeio', 20, 'Simplest interface');
+                addScore('thinkific', 15, 'Intuitive design');
+                addScore('highlevel', -15, 'Complex interface');
+            } else if (answers.ease === 'important') {
+                addScore('kit', 15, 'Clean, intuitive design');
+                addScore('activecampaign', 10, 'User-friendly');
+            }
+
+            // Sort by score
+            return Object.values(products)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 3);
+        }
+
+        function addScore(productId, points, reason) {
+            if (products[productId]) {
+                products[productId].score += points;
+                if (reason && points > 0) {
+                    products[productId].reasons.push(reason);
+                }
+            }
+        }
+
+        // UI Functions
+        function selectOption(element) {
+            const card = element.closest('.question-card');
+            card.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            answers[getStepKey(currentStep)] = element.dataset.value;
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function getStepKey(step) {
+            const keys = ['goal', 'budget', 'experience', 'integrations', 'ease'];
+            return keys[step - 1];
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                document.querySelector(`.question-card[data-step="${currentStep}"]`).classList.remove('active');
+                currentStep++;
+                document.querySelector(`.question-card[data-step="${currentStep}"]`).classList.add('active');
+                updateUI();
+            } else {
+                showResults();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                document.querySelector(`.question-card[data-step="${currentStep}"]`).classList.remove('active');
+                currentStep--;
+                document.querySelector(`.question-card[data-step="${currentStep}"]`).classList.add('active');
+                updateUI();
+            }
+        }
+
+        function updateUI() {
+            // Update progress
+            const progress = ((currentStep - 1) / totalSteps) * 100;
+            document.querySelector('.progress-fill').style.width = `${progress}%`;
+
+            // Update buttons
+            document.getElementById('prevBtn').disabled = currentStep === 1;
+            document.getElementById('nextBtn').textContent = currentStep === totalSteps ? 'See Results' : 'Next';
+            document.getElementById('nextBtn').disabled = !answers[getStepKey(currentStep)];
+        }
+
+        function showResults() {
+            // Hide questions and nav
+            document.querySelectorAll('.question-card').forEach(c => c.classList.remove('active'));
+            document.getElementById('navButtons').style.display = 'none';
+            document.querySelector('.progress-fill').style.width = '100%';
+
+            // Get recommendations
+            const recommendations = scoreProducts();
+
+            // Build results HTML
+            let html = '';
+            recommendations.forEach((product, index) => {
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉';
+                html += `
+                    <div class="result-item">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                            <span style="font-size: 1.5rem;">${medal}</span>
+                            <div>
+                                <h3>${product.name}</h3>
+                                <div class="score">Match Score: ${Math.min(product.score, 100)}%</div>
+                            </div>
+                        </div>
+                        <p style="color: var(--color-text-secondary); margin-bottom: 0.5rem;">${product.tagline}</p>
+                        <p style="font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: 0.75rem;">${product.pricing}</p>
+                        <ul class="reasons">
+                            ${product.reasons.map(r => `<li>${r}</li>`).join('')}
+                        </ul>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <a href="${product.url}" class="btn btn-primary" style="font-size: 0.875rem; padding: 0.5rem 1rem;">Read Review</a>
+                            <a href="${product.affiliate}" class="btn btn-secondary" style="font-size: 0.875rem; padding: 0.5rem 1rem;" target="_blank" rel="nofollow noopener">Visit Site →</a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('resultsList').innerHTML = html;
+            document.getElementById('resultsCard').classList.add('active');
+        }
+
+        // Initialize
+        updateUI();
+    </script>
+</body>
+</html>
